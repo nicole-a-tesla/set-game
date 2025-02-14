@@ -1,37 +1,52 @@
 'use client'
 
 import { initialDeck } from "./deck"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card"
 
 export default function Home() {
   const [deck, setDeck] = useState(initialDeck)
-  const [board, setBoard] = useState(draw(12))
-  const [discardPile, setDiscardPile] = useState([])
+  const [board, setBoard] = useState([])
+  const [selectedCards, setSelectedCards] = useState([])
 
-  function draw(count) {
+  useEffect(() => setBoard(draw(12)), [])
+
+  const isSelected= (cardId) => {
+    return selectedCards.some(card => card.id === cardId)
+  }
+
+  const onCardClick = (cardData) => {
+    setSelectedCards([
+      ...selectedCards,
+      cardData
+    ])
+  }
+
+  const draw = (count)=>{
     // draw n cards from deck and add to board
     // must take into account current board if set
-    const hand = []
-    let deckCopy = [...deck]
+    const selectedIndexes = []
 
-    while (hand.length < count) {
-      const index = Math.floor(Math.random() * deckCopy.length);
-      hand.push(
-        buildCard(deckCopy[index])
-      )
-      deckCopy = deckCopy.toSpliced(index, 1)
+    // add another check to while loop
+    while (selectedIndexes.length < count) {
+      const index = Math.floor(Math.random() * deck.length);
+      if (!selectedIndexes.includes(index)) selectedIndexes.push(index)
     }
 
-    return hand;
+    return selectedIndexes;
   }
-  function buildCard(cardData) {
-    return <Card key={Object.values(cardData).join("-")} {...cardData} />
-  }
+
+
   return (
-    <main className="">
+    <main>
       <div style={{margin: "25px", display: "flex", flexWrap: "wrap"}}>
-        {board}
+        {
+          board.map(i => <Card
+            key={Object.values(deck[i]).join("-")}
+            isSelected={isSelected(deck[i].id)}
+            cardData={deck[i]}
+            onCardClick={onCardClick} />)
+        }
       </div>
     </main>
   );

@@ -1,9 +1,11 @@
-export default function Card({id, suite, fill, color, count}) {
+export default function Card({isSelected, cardData, onCardClick}) {
+    const {id, suite, count, fill, color} = cardData
     const style = {
         border: "black",
         borderStyle: "solid",
         borderRadius: "10px",
         width: "fit-content",
+        background: isSelected ? "gray" : "white",
     }
 
     const shapes = {
@@ -52,7 +54,7 @@ export default function Card({id, suite, fill, color, count}) {
     }
 
     return (
-        <div style={style} id={id}>
+        <div style={style} id={id} onClick={() => onCardClick(cardData)}>
             <svg version="1.0" width="51.000000pt" height="93.000000pt" viewBox="0 0 51.000000 93.000000" preserveAspectRatio="xMidYMid meet">
                 <g transform="translate(0.000000,93.000000) scale(0.100000,-0.100000)" fill={color} stroke="none">
                     {buildPaths()}
