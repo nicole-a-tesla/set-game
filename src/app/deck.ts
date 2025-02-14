@@ -41,4 +41,4 @@ function buildDeck() {
     return allCombos
 }
 
-export const deck = buildDeck()
+export const initialDeck = buildDeck()

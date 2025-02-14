@@ -1,18 +1,28 @@
 'use client'
 
-import { deck } from "./deck"
+import { initialDeck } from "./deck"
 import { useState } from "react";
 import Card from "./Card"
 
 export default function Home() {
-  const firstDraw = draw(12)
+  const [deck, setDeck] = useState(initialDeck)
   const [board, setBoard] = useState(draw(12))
+  const [discardPile, setDiscardPile] = useState([])
 
   function draw(count) {
     // draw n cards from deck and add to board
     // must take into account current board if set
     const hand = []
-    deck.forEach(cardData => hand.push(buildCard(cardData)))
+    let deckCopy = [...deck]
+
+    while (hand.length < count) {
+      const index = Math.floor(Math.random() * deckCopy.length);
+      hand.push(
+        buildCard(deckCopy[index])
+      )
+      deckCopy = deckCopy.toSpliced(index, 1)
+    }
+
     return hand;
   }
   function buildCard(cardData) {
