@@ -54,7 +54,7 @@ export default function Card({isSelected, cardData, onCardClick}) {
     }
 
     return (
-        <div style={style} id={id} onClick={() => onCardClick(cardData)}>
+        <div style={style} id={id} onClick={() => onCardClick(cardData, isSelected)}>
             <svg version="1.0" width="51.000000pt" height="93.000000pt" viewBox="0 0 51.000000 93.000000" preserveAspectRatio="xMidYMid meet">
                 <g transform="translate(0.000000,93.000000) scale(0.100000,-0.100000)" fill={color} stroke="none">
                     {buildPaths()}

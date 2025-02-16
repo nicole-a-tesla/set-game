@@ -8,18 +8,40 @@ export default function Home() {
   const [deck, setDeck] = useState(initialDeck)
   const [board, setBoard] = useState([])
   const [selectedCards, setSelectedCards] = useState([])
+  const [error, setError] = useState('')
 
-  useEffect(() => setBoard(draw(12)), [])
+  useEffect(() => setBoard(draw(16)), [])
 
   const isSelected= (cardId) => {
     return selectedCards.some(card => card.id === cardId)
   }
 
-  const onCardClick = (cardData) => {
-    setSelectedCards([
-      ...selectedCards,
-      cardData
-    ])
+  const onCardClick = (cardData, isSelected) => {
+    console.log({selectedCards})
+    if (error !== "") setError("")
+
+    if (isSelected) {
+      unselectCard(cardData)
+    } else {
+      selectCard(cardData)
+      // check isSet if 3
+    }
+  }
+
+  const unselectCard = (cardData) => {
+      const newSelectedCards = selectedCards.filter(c => c.id !== cardData.id)
+      setSelectedCards(newSelectedCards);
+  }
+
+  const selectCard = (cardData) => {
+    if (selectedCards.length < 3) {
+      setSelectedCards([
+        ...selectedCards,
+        cardData
+      ])
+    } else {
+      setError("Select a maximum of 3 cards to create a set")
+    }
   }
 
   const draw = (count)=>{
@@ -48,6 +70,7 @@ export default function Home() {
             onCardClick={onCardClick} />)
         }
       </div>
+      <p>{error}</p>
     </main>
   );
 }
