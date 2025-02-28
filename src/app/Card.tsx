@@ -26,7 +26,7 @@ export default function Card({isSelected, cardData, onCardClick}) {
         }
     }
 
-    function getPathStyles() {
+    const getPathStyles = () => {
         if (count === "1") return []
         if (count === "2") {
             return [{transform: "translateY(150%)"}, {transform: "translateY(-150%)"}]
@@ -38,7 +38,7 @@ export default function Card({isSelected, cardData, onCardClick}) {
         ]
     }
 
-    const buildPaths = function() {
+    const buildPaths = () => {
         const pathStyles = getPathStyles()
 
         if (pathStyles.length === 0) return <path d={shapes[suite][fill]} />
