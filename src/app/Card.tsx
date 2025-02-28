@@ -1,4 +1,13 @@
-export default function Card({isSelected, cardData, onCardClick}) {
+import { CardData } from "@/types"
+import { JSX } from "react";
+
+interface CardProps {
+    isSelected: boolean;
+    cardData: CardData,
+    onCardClick: (cardData: CardData, isSelected: boolean) => {}
+}
+
+export default function Card({isSelected, cardData, onCardClick}: CardProps) {
     const {id, suite, count, fill, color} = cardData
     const style = {
         border: "black",
@@ -43,7 +52,7 @@ export default function Card({isSelected, cardData, onCardClick}) {
 
         if (pathStyles.length === 0) return <path d={shapes[suite][fill]} />
 
-        const paths = []
+        const paths: JSX.Element[] = []
 
         pathStyles.forEach((style, index)=> {
             paths.push(
