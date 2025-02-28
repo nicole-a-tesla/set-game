@@ -1,26 +1,7 @@
+import { CardData, SUITE, FILL, COLOR, COUNT } from "@/types";
 
-const SUITE = {
-    DIAMOND: "diamond",
-    SQUIGGLE: "squiggle",
-    PILL: "pill"
-}
-
-const FILL = {
-  NONE: "none",
-  PARTIAL: "partial",
-  FULL: "full"
-}
-
-const COLOR = {
-    RED: "#e40707",
-    GREEN: "#54b946",
-    PURPLE: "#7701b7"
-}
-
-const COUNT = { ONE: "1", TWO: "2", THREE: "3" }
-
-function buildDeck() {
-    const allCombos = [];
+function buildDeck(): CardData[] {
+    const allCombos: CardData[] = [];
     const suites = Object.values(SUITE)
     const fills = Object.values(FILL)
     const colors = Object.values(COLOR)

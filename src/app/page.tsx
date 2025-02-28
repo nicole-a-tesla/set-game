@@ -4,13 +4,14 @@ import { initialDeck } from "./deck"
 import { useEffect, useState } from "react";
 import Card from "./Card"
 import isSet from "./setChecker";
+import { CardData } from "@/types";
 
 export default function Home() {
-  const [deck, setDeck] = useState(initialDeck)
-  const [board, setBoard] = useState([])
-  const [selectedCards, setSelectedCards] = useState([])
+  const [deck, setDeck] = useState<CardData[]>(initialDeck)
+  const [board, setBoard] = useState<number[]>([])
+  const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
-  const [usedCardIndexes, setUsedCardIndexes] = useState([])
+  const [usedCardIndexes, setUsedCardIndexes] = useState<number[]>([])
 
   useEffect(() => draw(16), [])
 
@@ -18,11 +19,11 @@ export default function Home() {
     if (selectedCards.length === 3) checkAndReset()
   }, [selectedCards])
 
-  const isSelected= (cardId) => {
+  const isSelected= (cardId: string) => {
     return selectedCards.some(card => card.id === cardId)
   }
 
-  const removeCards = (cards) => {
+  const removeCards = (cards: CardData[]) => {
     const targetIds = cards.map(c => c.id)
     return board.filter(cardIndex => {
       return !targetIds.includes(deck[cardIndex].id)
@@ -31,10 +32,8 @@ export default function Home() {
 
   const checkAndReset = () => {
     if (isSet(selectedCards)) {
-      setBoard([
-        ...removeCards(selectedCards),
-        ...selectNewCardIndexes(3)
-      ])
+      const nextBoard = removeCards(selectedCards)
+      draw(3, nextBoard)
       setSelectedCards([])
     } else {
       setSelectedCards([])
@@ -43,22 +42,19 @@ export default function Home() {
 
   }
 
-  const onCardClick = (cardData, isSelected) => {
+  const onCardClick = (cardData: CardData, isSelected: boolean) => {
     if (message !== "") setMessage("")
-
-    if (isSelected) {
-      unselectCard(cardData)
-    } else {
-      selectCard(cardData)
-    }
+    isSelected
+      ? unselectCard(cardData)
+      : selectCard(cardData)
   }
 
-  const unselectCard = (cardData) => {
+  const unselectCard = (cardData: CardData) => {
       const newSelectedCards = selectedCards.filter(c => c.id !== cardData.id)
       setSelectedCards(newSelectedCards);
   }
 
-  const selectCard = (cardData) => {
+  const selectCard = (cardData: CardData) => {
     if (selectedCards.length < 3) {
       setSelectedCards([
         ...selectedCards,
@@ -69,8 +65,8 @@ export default function Home() {
     }
   }
 
-  const selectNewCardIndexes = (count) => {
-    const selectedIndexes = []
+  const selectNewCardIndexes = (count: number) => {
+    const selectedIndexes: number[] = []
 
     while (selectedIndexes.length < count) {
       const index = Math.floor(Math.random() * deck.length); // todo fix
@@ -81,7 +77,7 @@ export default function Home() {
     return selectedIndexes
   }
 
-  const draw = (count) => {
+  const draw = (count: number, nextBoard?: number[]) => {
     const selectedIndexes = selectNewCardIndexes(count)
 
     setUsedCardIndexes([
@@ -89,7 +85,7 @@ export default function Home() {
       ...selectedIndexes
     ])
     setBoard([
-      ...board,
+      ...nextBoard ? nextBoard : board,
       ...selectedIndexes
     ])
   }
