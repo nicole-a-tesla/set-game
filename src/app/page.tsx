@@ -13,12 +13,22 @@ export default function Home() {
   const [message, setMessage] = useState('')
   const [usedCardIndexes, setUsedCardIndexes] = useState<number[]>([])
   const [isDiscarding, setIsDiscarding] = useState(false)
+  const [initialRender, setInitalRender] = useState(true)
 
-  useEffect(() => draw(16), [])
+  useEffect(() => {
+    draw(16)
+    setInitalRender(false)
+  }, [])
 
   useEffect(() => {
     if (selectedCards.length === 3) checkAndReset()
   }, [selectedCards])
+
+  useEffect(() => {
+    if (!initialRender && board.length <= 15) {
+      setTimeout(() => draw(3), 1500)
+    }
+  }, [board.length])
 
   const isSelected= (cardId: string) => {
     return selectedCards.some(card => card.id === cardId)

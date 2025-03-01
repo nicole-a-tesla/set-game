@@ -1,5 +1,6 @@
+import { CardData } from "@/types"
 
-const isSet = (cards) => {
+const isSet = (cards: CardData[]) => {
     const resultMap = {
         suite: new Set(),
         count: new Set(),
