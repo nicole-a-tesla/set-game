@@ -23,7 +23,7 @@ export enum COUNT {
     THREE ="3"
 }
 
-interface CardData {
+export interface CardData {
     id: string;
     suite: SUITE;
     count: COUNT;

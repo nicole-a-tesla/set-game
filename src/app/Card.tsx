@@ -3,18 +3,29 @@ import { JSX } from "react";
 
 interface CardProps {
     isSelected: boolean;
-    cardData: CardData,
-    onCardClick: (cardData: CardData, isSelected: boolean) => {}
+    isDiscard: boolean;
+    cardData: CardData;
+    order: number;
+    onCardClick: (cardData: CardData, isSelected: boolean) => void
 }
 
-export default function Card({isSelected, cardData, onCardClick}: CardProps) {
+export default function Card({isSelected, order, isDiscard, cardData, onCardClick}: CardProps) {
     const {id, suite, count, fill, color} = cardData
+
     const style = {
         border: "black",
         borderStyle: "solid",
         borderRadius: "10px",
         width: "fit-content",
         background: isSelected ? "gray" : "white",
+        order: `${order}`,
+        transition: "opacity 1s"
+    }
+
+    const parentStyle = {
+        top: `${20 * Math.floor(order/4)}%`,
+        left: `${15 * (order % 4)}%`,
+        transition: "top 1s, left 1s"
     }
 
     const shapes = {
@@ -63,12 +74,14 @@ export default function Card({isSelected, cardData, onCardClick}: CardProps) {
     }
 
     return (
-        <div style={style} id={id} onClick={() => onCardClick(cardData, isSelected)}>
-            <svg version="1.0" width="51.000000pt" height="93.000000pt" viewBox="0 0 51.000000 93.000000" preserveAspectRatio="xMidYMid meet">
-                <g transform="translate(0.000000,93.000000) scale(0.100000,-0.100000)" fill={color} stroke="none">
-                    {buildPaths()}
-                </g>
-            </svg>
+        <div className="p-5 absolute" style={parentStyle}>
+            <div className={isDiscard ? "opacity-0" : "opacity-100"} style={style} id={id} onClick={() => onCardClick(cardData, isSelected)}>
+                <svg version="1.0" width="51.000000pt" height="93.000000pt" viewBox="0 0 51.000000 93.000000" preserveAspectRatio="xMidYMid meet">
+                    <g transform="translate(0.000000,93.000000) scale(0.100000,-0.100000)" fill={color} stroke="none">
+                        { buildPaths() }
+                    </g>
+                </svg>
+            </div>
         </div>
     )
 }

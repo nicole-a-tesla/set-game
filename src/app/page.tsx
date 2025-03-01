@@ -12,6 +12,7 @@ export default function Home() {
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
   const [usedCardIndexes, setUsedCardIndexes] = useState<number[]>([])
+  const [isDiscarding, setIsDiscarding] = useState(false)
 
   useEffect(() => draw(16), [])
 
@@ -32,9 +33,13 @@ export default function Home() {
 
   const checkAndReset = () => {
     if (isSet(selectedCards)) {
-      const nextBoard = removeCards(selectedCards)
-      draw(3, nextBoard)
-      setSelectedCards([])
+      setIsDiscarding(true)
+      setTimeout(() => {
+        const nextBoard = removeCards(selectedCards)
+        setBoard(nextBoard)
+        setSelectedCards([])
+        setIsDiscarding(false)
+      }, 1000)
     } else {
       setSelectedCards([])
       setMessage("Not a set, please try again")
@@ -77,7 +82,7 @@ export default function Home() {
     return selectedIndexes
   }
 
-  const draw = (count: number, nextBoard?: number[]) => {
+  const draw = (count: number) => {
     const selectedIndexes = selectNewCardIndexes(count)
 
     setUsedCardIndexes([
@@ -85,22 +90,28 @@ export default function Home() {
       ...selectedIndexes
     ])
     setBoard([
-      ...nextBoard ? nextBoard : board,
+      ...board,
       ...selectedIndexes
     ])
   }
 
-
+  const style = {
+    left: "50%",
+    transform: "translateX(-50%)"
+  }
   return (
-    <main>
-      <div className="flex justify-center items-center">
+    <main className="h-screen">
+      <div className="h-full">
         <div
-          className="grid grid-cols-4 bg-red-500">
+          style={style}
+          className="h-full w-3/4 m-auto relative">
           {
-            board.map(i => <Card
-              key={Object.values(deck[i]).join("-")}
-              isSelected={isSelected(deck[i].id)}
-              cardData={deck[i]}
+            board.map((cardPositionInDeck, index) => <Card
+              key={Object.values(deck[cardPositionInDeck]).join("-")}
+              isSelected={isSelected(deck[cardPositionInDeck].id)}
+              cardData={deck[cardPositionInDeck]}
+              order={index}
+              isDiscard={isDiscarding && isSelected(deck[cardPositionInDeck].id)}
               onCardClick={onCardClick} />)
           }
         </div>
