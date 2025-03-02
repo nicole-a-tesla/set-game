@@ -88,15 +88,16 @@ export default function Home() {
   }
 
   const style = {
-    left: "50%",
-    transform: "translateX(-50%)"
+    height: "700px",
+    width: "566px"
   }
+
   return (
-    <main className="h-screen">
-      <div className="h-full">
+    <main>
+      <div className="flex ">
         <div
           style={style}
-          className="h-full w-3/4 m-auto relative">
+          className="m-auto relative">
           {
             board.map((cardPositionInDeck, index) => <Card
               key={Object.values(deck[cardPositionInDeck]).join("-")}
@@ -108,8 +109,10 @@ export default function Home() {
               onCardClick={onCardClick} />)
           }
         </div>
+        <div>
+          <p>{message}</p>
+        </div>
       </div>
-      <p>{message}</p>
     </main>
   );
 }
