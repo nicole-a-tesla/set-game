@@ -68,9 +68,11 @@ export default function Home() {
 
   const onCardClick = (cardData: CardData, isSelected: boolean) => {
     if (message !== "") setMessage("")
-    isSelected
-      ? unselectCard(cardData)
-      : selectCard(cardData)
+    if (isSelected) {
+      unselectCard(cardData)
+    } else {
+      selectCard(cardData)
+    }
   }
 
   const unselectCard = (cardData: CardData) => {
