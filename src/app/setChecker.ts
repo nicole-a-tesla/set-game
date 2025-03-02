@@ -22,3 +22,5 @@ const isSet = (cards: CardData[]) => {
     
     return suiteSet && countSet && fillSet && colorSet
 }
+
+export default isSet;
