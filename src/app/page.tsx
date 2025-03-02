@@ -1,17 +1,15 @@
 'use client'
 
-import { initialDeck } from "./deck"
+import { deck, unusedIndexes } from "./deck"
 import { useEffect, useState } from "react";
 import Card from "./Card"
 import isSet from "./setChecker";
 import { CardData } from "@/types";
 
 export default function Home() {
-  const [deck, setDeck] = useState<CardData[]>(initialDeck)
   const [board, setBoard] = useState<number[]>([])
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
-  const [usedCardIndexes, setUsedCardIndexes] = useState<number[]>([])
   const [isDiscarding, setIsDiscarding] = useState(false)
   const [initialRender, setInitalRender] = useState(true)
 
@@ -81,24 +79,15 @@ export default function Home() {
   }
 
   const selectNewCardIndexes = (count: number) => {
-    const selectedIndexes: number[] = []
-
-    while (selectedIndexes.length < count) {
-      const index = Math.floor(Math.random() * deck.length); // todo fix
-      if (!selectedIndexes.includes(index) && !usedCardIndexes.includes(index)) {
-        selectedIndexes.push(index)
-      }
-    }
-    return selectedIndexes
+    if (unusedIndexes.length === 0) return []
+    if (unusedIndexes.length < 3) return unusedIndexes
+    return unusedIndexes.splice(0, count)
   }
 
   const draw = (count: number) => {
     const selectedIndexes = selectNewCardIndexes(count)
+    if (selectedIndexes.length === 0) return
 
-    setUsedCardIndexes([
-      ...usedCardIndexes,
-      ...selectedIndexes
-    ])
     setBoard([
       ...board,
       ...selectedIndexes
