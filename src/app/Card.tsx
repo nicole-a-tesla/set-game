@@ -1,15 +1,28 @@
 import { CardData } from "@/types"
-import { JSX } from "react";
+import { JSX, useEffect, useState } from "react";
 
 interface CardProps {
     isSelected: boolean;
     isDiscard: boolean;
     cardData: CardData;
     order: number;
+    slideIn: boolean;
     onCardClick: (cardData: CardData, isSelected: boolean) => void
 }
 
-export default function Card({isSelected, order, isDiscard, cardData, onCardClick}: CardProps) {
+export default function Card({isSelected, slideIn, order, isDiscard, cardData, onCardClick}: CardProps) {
+    let initialLeftPosition = slideIn ? '100%' : `${15 * (order % 4)}%`
+    let [leftPosition, setLeftPosition] = useState(initialLeftPosition)
+
+    useEffect(() => {
+        const leftPositionFormula = `${15 * (order % 4)}%`
+        if (slideIn) {
+            setTimeout(() => setLeftPosition(leftPositionFormula), 0)
+        } else {
+            setLeftPosition(leftPositionFormula)
+        }
+    }, [order])
+
     const {id, suite, count, fill, color} = cardData
 
     const style = {
@@ -17,15 +30,15 @@ export default function Card({isSelected, order, isDiscard, cardData, onCardClic
         borderStyle: "solid",
         borderRadius: "10px",
         width: "fit-content",
+        order,
         background: isSelected ? "gray" : "white",
-        order: `${order}`,
         transition: "opacity 1s"
     }
 
     const parentStyle = {
+        transition: "top 1s, left 1s",
         top: `${20 * Math.floor(order/4)}%`,
-        left: `${15 * (order % 4)}%`,
-        transition: "top 1s, left 1s"
+        left: leftPosition
     }
 
     const shapes = {

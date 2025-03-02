@@ -11,25 +11,36 @@ export default function Home() {
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
   const [isDiscarding, setIsDiscarding] = useState(false)
-  const [initialRender, setInitalRender] = useState(true)
 
-  useEffect(() => {
-    draw(16)
-    setInitalRender(false)
-  }, [])
+  useEffect(() => draw(16), [])
 
   useEffect(() => {
     if (selectedCards.length === 3) checkAndReset()
   }, [selectedCards])
 
   useEffect(() => {
-    if (!initialRender && board.length <= 15) {
-      setTimeout(() => draw(3), 1500)
+    if (board.length > 0 && board.length <= 15) {
+      setTimeout(() => draw(3), 500)
     }
   }, [board.length])
 
   const isSelected= (cardId: string) => {
     return selectedCards.some(card => card.id === cardId)
+  }
+
+  const selectNewCardIndexes = (count: number) => {
+    if (unusedIndexes.length === 0) return []
+    if (unusedIndexes.length < 3) return unusedIndexes
+    return unusedIndexes.splice(0, count)
+  }
+  const draw = (count: number) => {
+    const selectedIndexes = selectNewCardIndexes(count)
+    if (selectedIndexes.length === 0) return
+
+    setBoard([
+      ...board,
+      ...selectedIndexes
+    ])
   }
 
   const removeCards = (cards: CardData[]) => {
@@ -73,25 +84,7 @@ export default function Home() {
         ...selectedCards,
         cardData
       ])
-    } else {
-      setMessage("Select a maximum of 3 cards to create a set")
     }
-  }
-
-  const selectNewCardIndexes = (count: number) => {
-    if (unusedIndexes.length === 0) return []
-    if (unusedIndexes.length < 3) return unusedIndexes
-    return unusedIndexes.splice(0, count)
-  }
-
-  const draw = (count: number) => {
-    const selectedIndexes = selectNewCardIndexes(count)
-    if (selectedIndexes.length === 0) return
-
-    setBoard([
-      ...board,
-      ...selectedIndexes
-    ])
   }
 
   const style = {
@@ -110,6 +103,7 @@ export default function Home() {
               isSelected={isSelected(deck[cardPositionInDeck].id)}
               cardData={deck[cardPositionInDeck]}
               order={index}
+              slideIn={index >= 13}
               isDiscard={isDiscarding && isSelected(deck[cardPositionInDeck].id)}
               onCardClick={onCardClick} />)
           }
