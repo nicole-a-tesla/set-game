@@ -27,14 +27,14 @@ const buildDeck = (): CardData[] => {
  * Starting with the last element, pick a rand element and swap them
  * Then decrement current element index. Operates destructively
  *
- * @param {any[]} array an array of any element types
- * @return {any[]} a shuffled array
+ * @param {numner[]} array an array numbers 
+ * @return {number[]} a shuffled array
  */
-const shuffle = (array: any[]) => {
+const shuffle = (array: number[]) => {
     let currentIndex = array.length;
 
     while (currentIndex != 0) {
-        let randomIndex = Math.floor(Math.random() * currentIndex);
+        const randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
 
         // swap

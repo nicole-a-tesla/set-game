@@ -11,8 +11,8 @@ interface CardProps {
 }
 
 export default function Card({isSelected, slideIn, order, isDiscard, cardData, onCardClick}: CardProps) {
-    let initialLeftPosition = slideIn ? '100%' : `${15 * (order % 4)}%`
-    let [leftPosition, setLeftPosition] = useState(initialLeftPosition)
+    const initialLeftPosition = slideIn ? '100%' : `${15 * (order % 4)}%`
+    const [leftPosition, setLeftPosition] = useState(initialLeftPosition)
 
     useEffect(() => {
         const leftPositionFormula = `${15 * (order % 4)}%`
@@ -21,7 +21,7 @@ export default function Card({isSelected, slideIn, order, isDiscard, cardData, o
         } else {
             setLeftPosition(leftPositionFormula)
         }
-    }, [order])
+    }, [order, slideIn])
 
     const {id, suite, count, fill, color} = cardData
 
