@@ -99,7 +99,7 @@ export default function Home() {
       <div className="flex ">
         <div
           style={style}
-          className="m-auto relative">
+          className="m-auto relative m-5">
           {
             board.map((cardPositionInDeck, index) => <Card
               key={Object.values(deck[cardPositionInDeck]).join("-")}

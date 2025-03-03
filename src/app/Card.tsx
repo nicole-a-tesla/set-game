@@ -11,11 +11,11 @@ interface CardProps {
 }
 
 export default function Card({isSelected, slideIn, order, isDiscard, cardData, onCardClick}: CardProps) {
-    const initialLeftPosition = slideIn ? '100%' : `${15 * (order % 4)}%`
+    const initialLeftPosition = slideIn ? '100%' : `${100 * (order % 4)}px`
     const [leftPosition, setLeftPosition] = useState(initialLeftPosition)
 
     useEffect(() => {
-        const leftPositionFormula = `${15 * (order % 4)}%`
+        const leftPositionFormula = `${100 * (order % 4)}px`
         if (slideIn) {
             setTimeout(() => setLeftPosition(leftPositionFormula), 0)
         } else {
@@ -37,7 +37,7 @@ export default function Card({isSelected, slideIn, order, isDiscard, cardData, o
 
     const parentStyle = {
         transition: "top 1s, left 1s",
-        top: `${20 * Math.floor(order/4)}%`,
+        top: `${150 * Math.floor(order/4)}px`,
         left: leftPosition
     }
 
@@ -87,7 +87,7 @@ export default function Card({isSelected, slideIn, order, isDiscard, cardData, o
     }
 
     return (
-        <div className="p-5 absolute" style={parentStyle}>
+        <div className="absolute" style={parentStyle}>
             <div className={isDiscard ? "opacity-0" : "opacity-100"} style={style} id={id} onClick={() => onCardClick(cardData, isSelected)}>
                 <svg version="1.0" width="51.000000pt" height="93.000000pt" viewBox="0 0 51.000000 93.000000" preserveAspectRatio="xMidYMid meet">
                     <g transform="translate(0.000000,93.000000) scale(0.100000,-0.100000)" fill={color} stroke="none">
