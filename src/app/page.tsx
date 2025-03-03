@@ -90,13 +90,13 @@ export default function Home() {
   }
 
   const style = {
-    height: "700px",
-    width: "566px"
+    height: "577px",
+    width: "370px"
   }
 
   return (
     <main>
-      <div className="flex ">
+      <div className="flex flex-col items-center">
         <div
           style={style}
           className="m-auto relative m-5">
@@ -106,7 +106,6 @@ export default function Home() {
               isSelected={isSelected(deck[cardPositionInDeck].id)}
               cardData={deck[cardPositionInDeck]}
               order={index}
-              slideIn={index >= 13}
               isDiscard={isDiscarding && isSelected(deck[cardPositionInDeck].id)}
               onCardClick={onCardClick} />)
           }

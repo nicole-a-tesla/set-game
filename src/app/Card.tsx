@@ -6,24 +6,17 @@ interface CardProps {
     isDiscard: boolean;
     cardData: CardData;
     order: number;
-    slideIn: boolean;
     onCardClick: (cardData: CardData, isSelected: boolean) => void
 }
 
-export default function Card({isSelected, slideIn, order, isDiscard, cardData, onCardClick}: CardProps) {
-    const initialLeftPosition = slideIn ? '100%' : `${100 * (order % 4)}px`
-    const [leftPosition, setLeftPosition] = useState(initialLeftPosition)
+export default function Card({isSelected, order, isDiscard, cardData, onCardClick}: CardProps) {
+    const {id, suite, count, fill, color} = cardData
+    const [leftPosition, setLeftPosition] = useState('100%')
 
     useEffect(() => {
         const leftPositionFormula = `${100 * (order % 4)}px`
-        if (slideIn) {
-            setTimeout(() => setLeftPosition(leftPositionFormula), 0)
-        } else {
-            setLeftPosition(leftPositionFormula)
-        }
-    }, [order, slideIn])
-
-    const {id, suite, count, fill, color} = cardData
+        setTimeout(() => setLeftPosition(leftPositionFormula), 5)
+    }, [order])
 
     const style = {
         border: "black",
