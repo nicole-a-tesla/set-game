@@ -8,7 +8,7 @@ import { CardData } from "@/types";
 import { useBoard } from "./useBoard";
 
 export default function Home() {
-  const [board, setBoard] = useBoard([])
+  const [board, removeCards] = useBoard([])
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
   const [isDiscarding, setIsDiscarding] = useState(false)
@@ -21,18 +21,11 @@ export default function Home() {
     return selectedCards.some(card => card.id === cardId)
   }
 
-  const removeCards = (cards: CardData[]) => {
-    const targetIds = cards.map(c => c.id)
-    return board.filter(cardIndex => {
-      return !targetIds.includes(deck[cardIndex].id)
-    })
-  }
-
   const checkAndReset = () => {
     if (isSet(selectedCards)) {
       setIsDiscarding(true)
       setTimeout(() => {
-        setBoard(removeCards(selectedCards))
+        removeCards(selectedCards)
         setSelectedCards([])
         setIsDiscarding(false)
       }, 1000)
@@ -65,17 +58,10 @@ export default function Home() {
     }
   }
 
-  const style = {
-    height: "577px",
-    width: "370px"
-  }
-
   return (
     <main>
       <div className="flex flex-col items-center">
-        <div
-          style={style}
-          className="m-auto relative m-5">
+        <div className="m-auto relative m-5 h-[577px] w-[370px]">
           {
             board.map((cardPositionInDeck: number, index: number) => <Card
               key={Object.values(deck[cardPositionInDeck]).join("-")}
