@@ -23,7 +23,6 @@ export default function Card({isSelected, order, isDiscard, cardData, onCardClic
         borderStyle: "solid",
         borderRadius: "10px",
         width: "fit-content",
-        order,
         background: isSelected ? "gray" : "white",
         transition: "opacity 1s"
     }
