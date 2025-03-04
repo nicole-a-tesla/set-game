@@ -1,46 +1,24 @@
 'use client'
 
-import { deck, unusedIndexes } from "./deck"
+import { deck } from "./deck"
 import { useEffect, useState } from "react";
 import Card from "./Card"
 import isSet from "./setChecker";
 import { CardData } from "@/types";
+import { useBoard } from "./useBoard";
 
 export default function Home() {
-  const [board, setBoard] = useState<number[]>([])
+  const [board, setBoard] = useBoard([])
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
   const [isDiscarding, setIsDiscarding] = useState(false)
-
-  useEffect(() => draw(16), [])
 
   useEffect(() => {
     if (selectedCards.length === 3) checkAndReset()
   }, [selectedCards])
 
-  useEffect(() => {
-    if (board.length > 0 && board.length <= 15) {
-      setTimeout(() => draw(3), 500)
-    }
-  }, [board.length])
-
-  const isSelected= (cardId: string) => {
+  const isSelected = (cardId: string) => {
     return selectedCards.some(card => card.id === cardId)
-  }
-
-  const selectNewCardIndexes = (count: number) => {
-    if (unusedIndexes.length === 0) return []
-    if (unusedIndexes.length < 3) return unusedIndexes
-    return unusedIndexes.splice(0, count)
-  }
-  const draw = (count: number) => {
-    const selectedIndexes = selectNewCardIndexes(count)
-    if (selectedIndexes.length === 0) return
-
-    setBoard([
-      ...board,
-      ...selectedIndexes
-    ])
   }
 
   const removeCards = (cards: CardData[]) => {
@@ -54,8 +32,7 @@ export default function Home() {
     if (isSet(selectedCards)) {
       setIsDiscarding(true)
       setTimeout(() => {
-        const nextBoard = removeCards(selectedCards)
-        setBoard(nextBoard)
+        setBoard(removeCards(selectedCards))
         setSelectedCards([])
         setIsDiscarding(false)
       }, 1000)
@@ -63,7 +40,6 @@ export default function Home() {
       setSelectedCards([])
       setMessage("Not a set, please try again")
     }
-
   }
 
   const onCardClick = (cardData: CardData, isSelected: boolean) => {
@@ -101,7 +77,7 @@ export default function Home() {
           style={style}
           className="m-auto relative m-5">
           {
-            board.map((cardPositionInDeck, index) => <Card
+            board.map((cardPositionInDeck: number, index: number) => <Card
               key={Object.values(deck[cardPositionInDeck]).join("-")}
               isSelected={isSelected(deck[cardPositionInDeck].id)}
               cardData={deck[cardPositionInDeck]}
