@@ -8,7 +8,13 @@ import { CardData } from "@/types";
 import { useBoard } from "./useBoard";
 
 export default function Home() {
-  const [board, removeCards] = useBoard([])
+  const [
+    board,
+    boardSize,
+    removeCards,
+    boardIsDefaultSize,
+    addThreeCards
+  ] = useBoard([])
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
   const [isDiscarding, setIsDiscarding] = useState(false)
@@ -58,10 +64,13 @@ export default function Home() {
     }
   }
 
+  const heightClass = boardIsDefaultSize() ? 'h-[432px]' : 'h-[577px]'
+  const buttonActiveClass = boardIsDefaultSize() ? '': 'cursor-not-allowed'
+
   return (
     <main>
       <div className="flex flex-col items-center">
-        <div className="m-auto relative m-5 h-[577px] w-[370px]">
+        <div className={`m-auto relative m-5 ${heightClass} w-[370px]`}>
           {
             board.map((cardPositionInDeck: number, index: number) => <Card
               key={Object.values(deck[cardPositionInDeck]).join("-")}
@@ -74,6 +83,12 @@ export default function Home() {
         </div>
         <div>
           <p>{message}</p>
+          <button
+            onClick={addThreeCards}
+            disabled={!boardIsDefaultSize()}
+            className={`${buttonActiveClass} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}>
+            Add three cards
+          </button>
         </div>
       </div>
     </main>

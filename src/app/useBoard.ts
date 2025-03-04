@@ -2,18 +2,25 @@ import { useEffect, useState } from "react";
 import { deck, unusedIndexes } from "./deck";
 import { CardData } from "@/types";
 
+export const SMALL_BOARD = 12
+const LARGE_BOARD = 15
+
 export function useBoard(cardIndexes: number[])
     : [
         number[],
-        (cards: CardData[]) => void
+        number,
+        (cards: CardData[]) => void,
+        () => boolean,
+        () => void
     ] {
     const [board, setBoard] = useState<number[]>(cardIndexes)
+    const [boardSize, setBoardSize] = useState(SMALL_BOARD)
     
-    useEffect(() => draw(16), [])
+    useEffect(() => draw(boardSize), [])
 
     useEffect(() => {
-        if (board.length > 0 && board.length <= 15) {
-            setTimeout(() => draw(3), 500)
+        if (board.length > 0 && board.length < boardSize) {
+            setTimeout(() => draw(3), 700)
         }
     }, [board.length])
 
@@ -37,8 +44,22 @@ export function useBoard(cardIndexes: number[])
         const boardWithoutCards = board.filter(cardIndex => {
             return !targetIds.includes(deck[cardIndex].id)
         })
+        if (boardSize === LARGE_BOARD) {
+            setBoardSize(SMALL_BOARD)
+        }
         setBoard(boardWithoutCards)
     }
 
-    return [board, removeCards]
+    const addThreeCards = () => {
+        if (boardSize === SMALL_BOARD) {
+            draw(3)
+            setBoardSize(LARGE_BOARD)
+        }
+    }
+
+    const boardIsDefaultSize = () => {
+        return boardSize === SMALL_BOARD
+    }
+
+    return [board, boardSize, removeCards, boardIsDefaultSize, addThreeCards]
 }
