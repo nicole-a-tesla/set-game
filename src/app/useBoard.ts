@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { unusedIndexes } from "./deck";
+import { deck, unusedIndexes } from "./deck";
+import { CardData } from "@/types";
 
-export function useBoard(cardIndexes: number[]): [number[], (newBoard: number[]) => void] {
+export function useBoard(cardIndexes: number[])
+    : [
+        number[],
+        (cards: CardData[]) => void
+    ] {
     const [board, setBoard] = useState<number[]>(cardIndexes)
     
     useEffect(() => draw(16), [])
@@ -11,10 +16,6 @@ export function useBoard(cardIndexes: number[]): [number[], (newBoard: number[])
             setTimeout(() => draw(3), 500)
         }
     }, [board.length])
-
-    const handleBoardChange = (newBoard: number[]) => {
-        setBoard(newBoard)
-    }
 
     const selectNewCardIndexes = (count: number) => {
         if (unusedIndexes.length === 0) return []
@@ -31,5 +32,13 @@ export function useBoard(cardIndexes: number[]): [number[], (newBoard: number[])
         ])
     }
 
-    return [board, handleBoardChange]
+    const removeCards = (cards: CardData[]) => {
+        const targetIds = cards.map(c => c.id)
+        const boardWithoutCards = board.filter(cardIndex => {
+            return !targetIds.includes(deck[cardIndex].id)
+        })
+        setBoard(boardWithoutCards)
+    }
+
+    return [board, removeCards]
 }
