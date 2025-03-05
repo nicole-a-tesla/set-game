@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <main>
       <div className="flex flex-col items-center">
-        <div className={`m-auto relative m-5 ${heightClass} w-[370px]`}>
+        <div className={`m-auto relative m-5 ${heightClass} w-[370px] transition-all duration-[1s]`}>
           {
             board.map((cardPositionInDeck: number, index: number) => <Card
               key={Object.values(deck[cardPositionInDeck]).join("-")}
@@ -80,13 +80,13 @@ export default function Home() {
               onCardClick={onCardClick} />)
           }
         </div>
-        <div>
+        <div className="m-4">
           <p>{message}</p>
           <button
             onClick={addThreeCards}
             disabled={!boardIsDefaultSize()}
             className={`${buttonActiveClass} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}>
-            Add three cards
+              +3
           </button>
         </div>
       </div>
