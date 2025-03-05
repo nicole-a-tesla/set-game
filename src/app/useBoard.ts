@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import { deck, unusedIndexes } from "./deck";
 import { CardData } from "@/types";
 
-export const SMALL_BOARD = 12
-const LARGE_BOARD = 15
-
 export function useBoard(cardIndexes: number[])
     : [
         number[],
-        number,
         (cards: CardData[]) => void,
         () => boolean,
         () => void
     ] {
+    const SMALL_BOARD = 12
+    const LARGE_BOARD = 15
+
     const [board, setBoard] = useState<number[]>(cardIndexes)
     const [boardSize, setBoardSize] = useState(SMALL_BOARD)
     
@@ -61,5 +60,5 @@ export function useBoard(cardIndexes: number[])
         return boardSize === SMALL_BOARD
     }
 
-    return [board, boardSize, removeCards, boardIsDefaultSize, addThreeCards]
+    return [board, removeCards, boardIsDefaultSize, addThreeCards]
 }

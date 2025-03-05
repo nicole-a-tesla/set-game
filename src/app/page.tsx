@@ -10,7 +10,6 @@ import { useBoard } from "./useBoard";
 export default function Home() {
   const [
     board,
-    boardSize,
     removeCards,
     boardIsDefaultSize,
     addThreeCards
