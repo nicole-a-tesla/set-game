@@ -64,7 +64,7 @@ export default function Home() {
   }
 
   const heightClass = boardIsDefaultSize() ? 'h-[432px]' : 'h-[577px]'
-  const buttonActiveClass = boardIsDefaultSize() ? '': 'cursor-not-allowed'
+  const buttonActiveClass = boardIsDefaultSize() ? 'bg-blue-500 hover:bg-blue-700': 'bg-zinc-300 cursor-not-allowed'
 
   return (
     <main>
@@ -85,7 +85,7 @@ export default function Home() {
           <button
             onClick={addThreeCards}
             disabled={!boardIsDefaultSize()}
-            className={`${buttonActiveClass} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}>
+            className={`${buttonActiveClass} text-white font-bold py-2 px-4 rounded`}>
               +3
           </button>
         </div>
