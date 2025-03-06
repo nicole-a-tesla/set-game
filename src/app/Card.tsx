@@ -7,10 +7,11 @@ interface CardProps {
     isDiscard: boolean;
     cardData: CardData;
     order: number;
+    isHintCard: boolean;
     onCardClick: (cardData: CardData, isSelected: boolean) => void
 }
 
-export default function Card({isSelected, order, isDiscard, cardData, onCardClick}: CardProps) {
+export default function Card({isSelected, order, isDiscard, isHintCard, cardData, onCardClick}: CardProps) {
     const [leftPosition, setLeftPosition] = useState('100%')
 
     useEffect(() => {
@@ -24,12 +25,20 @@ export default function Card({isSelected, order, isDiscard, cardData, onCardClic
         left: leftPosition
     }
 
+    const getBackgroundClass = () => {
+        if (isSelected) {
+            return "bg-zinc-400"
+        }
+        if (isHintCard) {
+            return "bg-yellow-200"
+        }
+        return "bg-white"
+    }
     const opacityClass = isDiscard ? "opacity-0" : "opacity-100"
-    const backgroundClass = isSelected ? "bg-zinc-400" : "bg-white"
 
     return (
         <div className="absolute" style={parentStyle}>
-            <div className={`${opacityClass} ${backgroundClass} transition transition-opacity duration-[1s] border-2 border-zinc-400 rounded-lg`} id={cardData.id} onClick={() => onCardClick(cardData, isSelected)}>
+            <div className={`${opacityClass} ${getBackgroundClass()} transition transition-opacity duration-[1s] border-2 border-zinc-400 rounded-lg`} id={cardData.id} onClick={() => onCardClick(cardData, isSelected)}>
                 <CardSvg {...cardData} />
             </div>
         </div>

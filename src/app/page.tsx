@@ -3,7 +3,7 @@
 import { deck } from "./deck"
 import { useEffect, useState } from "react";
 import Card from "./Card"
-import isSet from "./setChecker";
+import { isSet, selectHintCard } from "./setChecker";
 import { CardData } from "@/types";
 import { useBoard } from "./useBoard";
 
@@ -17,6 +17,8 @@ export default function Home() {
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
   const [isDiscarding, setIsDiscarding] = useState(false)
+  const [hintCard, setHintCard] = useState<number|null>(null)
+  const [showHint, setShowHint] = useState(false)
 
   useEffect(() => {
     if (selectedCards.length === 3) checkAndReset()
@@ -47,6 +49,9 @@ export default function Home() {
     } else {
       selectCard(cardData)
     }
+    if (showHint) {
+      setShowHint(false)
+    }
   }
 
   const unselectCard = (cardData: CardData) => {
@@ -63,6 +68,22 @@ export default function Home() {
     }
   }
 
+  const giveHint = () => {
+    if (hintCard && board.includes(hintCard)) {
+      setShowHint(true)
+      return
+    }
+    const newHint = selectHintCard(board, deck)
+    if (newHint) {
+      setHintCard(newHint)
+      setShowHint(true)
+    } else {
+      // TODO if no sets are present and can draw, flash +3 button
+      // if no sets present and cannot draw, end game
+      console.log("NO SET")
+    }
+  }
+
   const heightClass = boardIsDefaultSize() ? 'h-[432px]' : 'h-[577px]'
   const buttonActiveClass = boardIsDefaultSize() ? 'bg-blue-500 hover:bg-blue-700': 'bg-zinc-300 cursor-not-allowed'
 
@@ -75,6 +96,7 @@ export default function Home() {
               key={Object.values(deck[cardPositionInDeck]).join("-")}
               isSelected={isSelected(deck[cardPositionInDeck].id)}
               cardData={deck[cardPositionInDeck]}
+              isHintCard={showHint && hintCard === cardPositionInDeck}
               order={index}
               isDiscard={isDiscarding && isSelected(deck[cardPositionInDeck].id)}
               onCardClick={onCardClick} />)
@@ -85,8 +107,13 @@ export default function Home() {
           <button
             onClick={addThreeCards}
             disabled={!boardIsDefaultSize()}
-            className={`${buttonActiveClass} text-white font-bold py-2 px-4 rounded`}>
+            className={`${buttonActiveClass} text-white font-bold py-2 px-4 mx-2 rounded`}>
               +3
+          </button>
+          <button
+            onClick={giveHint}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded`}>
+              Hint
           </button>
         </div>
       </div>
