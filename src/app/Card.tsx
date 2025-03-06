@@ -25,7 +25,7 @@ export default function Card({isSelected, order, isDiscard, cardData, onCardClic
     }
 
     const opacityClass = isDiscard ? "opacity-0" : "opacity-100"
-    const backgroundClass = isSelected ? "bg-zinc-300" : "bg-white"
+    const backgroundClass = isSelected ? "bg-zinc-400" : "bg-white"
 
     return (
         <div className="absolute" style={parentStyle}>
