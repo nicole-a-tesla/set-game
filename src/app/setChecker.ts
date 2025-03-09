@@ -45,11 +45,3 @@ export const findSet = (board: number[], deck: CardData[]) => {
     }
     return null
 }
-
-export const selectHintCard = (board: number[], deck: CardData[]) => {
-    const setOrNull = findSet(board, deck);
-    if (!setOrNull) return null
-
-    const randIndex = Math.floor(Math.random() * 3);
-    return setOrNull[randIndex]
-}

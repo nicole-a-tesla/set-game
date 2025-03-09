@@ -7,7 +7,7 @@ export function useBoard(cardIndexes: number[])
         number[],
         (cards: CardData[]) => void,
         () => boolean,
-        () => void
+        () => void,
     ] {
     const SMALL_BOARD = 12
     const LARGE_BOARD = 15
@@ -15,7 +15,9 @@ export function useBoard(cardIndexes: number[])
     const [board, setBoard] = useState<number[]>(cardIndexes)
     const [boardSize, setBoardSize] = useState(SMALL_BOARD)
     
-    useEffect(() => draw(boardSize), [])
+    useEffect(() => {
+        draw(boardSize)
+    }, [])
 
     useEffect(() => {
         if (board.length > 0 && board.length < boardSize) {

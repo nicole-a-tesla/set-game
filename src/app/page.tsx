@@ -3,22 +3,24 @@
 import { deck } from "./deck"
 import { useEffect, useState } from "react";
 import Card from "./Card"
-import { isSet, selectHintCard } from "./setChecker";
+import { isSet } from "./setChecker";
 import { CardData } from "@/types";
 import { useBoard } from "./useBoard";
+import { useHint } from "./useHint";
 
 export default function Home() {
   const [
     board,
     removeCards,
     boardIsDefaultSize,
-    addThreeCards
+    addThreeCards,
   ] = useBoard([])
+
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
   const [message, setMessage] = useState('')
   const [isDiscarding, setIsDiscarding] = useState(false)
-  const [hintCard, setHintCard] = useState<number|null>(null)
   const [showHint, setShowHint] = useState(false)
+  const [hintCard, noSetsPresent] = useHint(board, deck)
 
   useEffect(() => {
     if (selectedCards.length === 3) checkAndReset()
@@ -69,14 +71,9 @@ export default function Home() {
   }
 
   const giveHint = () => {
-    if (hintCard && board.includes(hintCard)) {
+    if (hintCard) {
       setShowHint(true)
       return
-    }
-    const newHint = selectHintCard(board, deck)
-    if (newHint) {
-      setHintCard(newHint)
-      setShowHint(true)
     } else {
       // TODO if no sets are present and can draw, flash +3 button
       // if no sets present and cannot draw, end game
