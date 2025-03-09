@@ -23,9 +23,19 @@ export default function Home() {
   const [showHint, setShowHint] = useState(false)
   const [hintCard, noSetsPresent] = useHint(board, deck)
 
+  const gameOver = noSetsPresent && allCardsDealt()
+  const disabledButtonClasses = 'bg-zinc-300 cursor-not-allowed'
+  const enabledButtonClasses = 'bg-blue-500 hover:bg-blue-700'
+
   useEffect(() => {
     if (selectedCards.length === 3) checkAndReset()
   }, [selectedCards])
+
+  useEffect(() => {
+    if (noSetsPresent && allCardsDealt()) {
+      setMessage('GAME OVER')
+    }
+  }, [noSetsPresent])
 
   const isSelected = (cardId: string) => {
     return selectedCards.some(card => card.id === cardId)
@@ -85,22 +95,22 @@ export default function Home() {
   }
 
   const getPlusThreeButtonColorClasses = () => {
-    if (!boardIsDefaultSize()) {
-      return 'bg-zinc-300 cursor-not-allowed'
+    if (!boardIsDefaultSize() || gameOver) {
+      return disabledButtonClasses
     }
 
     if (noSetsPresent && !allCardsDealt() && showHint) {
       return 'bg-yellow-300 hover:bg-yellow-500'
     }
-
-    return 'bg-blue-500 hover:bg-blue-700'
+    return enabledButtonClasses
   }
 
   const heightClass = boardIsDefaultSize() ? 'h-[432px]' : 'h-[577px]'
+  const hintButtonColorClasses = gameOver ? disabledButtonClasses : enabledButtonClasses
 
   return (
     <main>
-      <div className="flex flex-col items-center">
+      <div className={`flex flex-col items-center`}>
         <div className={`m-auto relative m-5 ${heightClass} w-[370px] transition-all duration-[1s]`}>
           {
             board.map((cardPositionInDeck: number, index: number) => <Card
@@ -114,7 +124,7 @@ export default function Home() {
           }
         </div>
         <div className="m-4">
-          <p>{message}</p>
+          <p className="flex justify-center">{message}</p>
           <button
             onClick={handleAddThreeCardsClick}
             disabled={!boardIsDefaultSize()}
@@ -123,7 +133,7 @@ export default function Home() {
           </button>
           <button
             onClick={giveHint}
-            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded`}>
+            className={`${hintButtonColorClasses} text-white font-bold py-2 px-4 mx-2 rounded`}>
               Hint
           </button>
         </div>
