@@ -14,6 +14,7 @@ export default function Home() {
     removeCards,
     boardIsDefaultSize,
     addThreeCards,
+    allCardsDealt
   ] = useBoard([])
 
   const [selectedCards, setSelectedCards] = useState<CardData[]>([])
@@ -73,16 +74,29 @@ export default function Home() {
   const giveHint = () => {
     if (hintCard) {
       setShowHint(true)
-      return
-    } else {
-      // TODO if no sets are present and can draw, flash +3 button
-      // if no sets present and cannot draw, end game
-      console.log("NO SET")
     }
   }
 
+  const handleAddThreeCardsClick = () => {
+    if (showHint) {
+      setShowHint(false)
+    }
+    addThreeCards()
+  }
+
+  const getPlusThreeButtonColorClasses = () => {
+    if (!boardIsDefaultSize()) {
+      return 'bg-zinc-300 cursor-not-allowed'
+    }
+
+    if (noSetsPresent && !allCardsDealt() && showHint) {
+      return 'bg-yellow-300 hover:bg-yellow-500'
+    }
+
+    return 'bg-blue-500 hover:bg-blue-700'
+  }
+
   const heightClass = boardIsDefaultSize() ? 'h-[432px]' : 'h-[577px]'
-  const buttonActiveClass = boardIsDefaultSize() ? 'bg-blue-500 hover:bg-blue-700': 'bg-zinc-300 cursor-not-allowed'
 
   return (
     <main>
@@ -102,9 +116,9 @@ export default function Home() {
         <div className="m-4">
           <p>{message}</p>
           <button
-            onClick={addThreeCards}
+            onClick={handleAddThreeCardsClick}
             disabled={!boardIsDefaultSize()}
-            className={`${buttonActiveClass} text-white font-bold py-2 px-4 mx-2 rounded`}>
+            className={`${getPlusThreeButtonColorClasses()} text-white font-bold py-2 px-4 mx-2 rounded`}>
               +3
           </button>
           <button

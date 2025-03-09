@@ -28,7 +28,12 @@ export function useHint(board: number[], deck: CardData[]): [
             setNoSetsPresent(true)
             return
         }
+
         setHintSet(set)
+
+        if (noSetsPresent) {
+            setNoSetsPresent(false)
+        }
 
         const randIndex = Math.floor(Math.random() * 3)
         return setHintCard(set[randIndex])

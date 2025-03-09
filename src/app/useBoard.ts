@@ -8,6 +8,7 @@ export function useBoard(cardIndexes: number[])
         (cards: CardData[]) => void,
         () => boolean,
         () => void,
+        () => boolean
     ] {
     const SMALL_BOARD = 12
     const LARGE_BOARD = 15
@@ -62,5 +63,9 @@ export function useBoard(cardIndexes: number[])
         return boardSize === SMALL_BOARD
     }
 
-    return [board, removeCards, boardIsDefaultSize, addThreeCards]
+    const allCardsDealt = () => {
+        return unusedIndexes.length === 0
+    }
+
+    return [board, removeCards, boardIsDefaultSize, addThreeCards, allCardsDealt]
 }
