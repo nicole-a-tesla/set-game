@@ -110,8 +110,8 @@ export default function Home() {
   const hintButtonColorClasses = gameOver ? disabledButtonClasses : enabledButtonClasses
 
   return (
-    <main>
-      <div className={`flex flex-col items-center`}>
+    <main className="m-3">
+      <div className='flex flex-col items-center'>
         <div className={`m-auto relative m-5 ${heightClass} w-[370px] transition-all duration-[1s]`}>
           {
             board.map((cardPositionInDeck: number, index: number) => <Card
@@ -124,23 +124,24 @@ export default function Home() {
               onCardClick={onCardClick} />)
           }
         </div>
-        <div className="m-4">
-          <p className="flex justify-center">{message}</p>
-          <button
-            onClick={handleAddThreeCardsClick}
-            disabled={!boardIsDefaultSize()}
-            className={`${getPlusThreeButtonColorClasses()} text-white font-bold py-2 px-4 mx-2 rounded`}>
-              +3
-          </button>
-          <button
-            onClick={giveHint}
-            className={`${hintButtonColorClasses} text-white font-bold py-2 px-4 mx-2 rounded`}>
-              Hint
-          </button>
-          <div className="flex justify-center mt-3">
-            <a href="https://github.com/nicole-a-tesla/set-game">
-              <GithubSVG />
-            </a>
+        <div className="m-3 flex flex-col justify-center">
+          <p style={{display: message === '' ? 'none' : 'block'}} className="mb-1">{message}</p>
+          <div className="flex justify-center mb-2">
+            <button
+              onClick={handleAddThreeCardsClick}
+              disabled={!boardIsDefaultSize()}
+              className={`${getPlusThreeButtonColorClasses()} text-white font-bold py-2 px-4 mx-2 rounded`}>
+                +3
+            </button>
+            <button
+              onClick={giveHint}
+              className={`${hintButtonColorClasses} text-white font-bold py-2 px-4 mx-2 rounded`}>
+                Hint
+            </button>
+          </div>
+          <div className="flex flex-col items-center">
+            <a className="underline mb-1" target="_blank" rel="noreferrer" href="https://www.setgame.com/sites/default/files/instructions/SET%20INSTRUCTIONS%20-%20ENGLISH.pdf">instructions</a>
+            <a className="underline" target="_blank" rel="noreferrer" href="https://github.com/nicole-a-tesla/set-game">github</a>
           </div>
         </div>
       </div>
