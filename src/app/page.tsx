@@ -7,6 +7,7 @@ import { isSet } from "./setChecker";
 import { CardData } from "@/types";
 import { useBoard } from "./useBoard";
 import { useHint } from "./useHint";
+import GithubSVG from "./githubsvg";
 
 export default function Home() {
   const [
@@ -136,6 +137,11 @@ export default function Home() {
             className={`${hintButtonColorClasses} text-white font-bold py-2 px-4 mx-2 rounded`}>
               Hint
           </button>
+          <div className="flex justify-center mt-3">
+            <a href="https://github.com/nicole-a-tesla/set-game">
+              <GithubSVG />
+            </a>
+          </div>
         </div>
       </div>
     </main>
