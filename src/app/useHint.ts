@@ -12,7 +12,7 @@ export function useHint(board: number[], deck: CardData[]): [
 
     useEffect(() => {
         if (board.length === 0) return
-        if (hintSet.length === 0 || !setIsStillOnBoard(hintSet)) {
+        if (hintSet.length === 0 || !setIsStillOnBoard(hintSet) || hintCard === null) {
             setNewHints()
         }
     }, [board, deck])
@@ -25,6 +25,8 @@ export function useHint(board: number[], deck: CardData[]): [
         const set = findSet(board, deck)
 
         if (set === null) {
+            setHintCard(null)
+            setHintSet([])
             setNoSetsPresent(true)
             return
         }
