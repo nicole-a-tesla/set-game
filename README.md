@@ -1,5 +1,5 @@
 [Set card game](https://en.wikipedia.org/wiki/Set_(card_game)) built with nextjs and react. 
-Play at nicole-a-tesla.github.io/set-game
+Play at [nicole-a-tesla.github.io/set-game](https://nicole-a-tesla.github.io/set-game)
 
 ## Getting Started
 
