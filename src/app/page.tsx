@@ -7,7 +7,6 @@ import { isSet } from "./setChecker";
 import { CardData } from "@/types";
 import { useBoard } from "./useBoard";
 import { useHint } from "./useHint";
-import GithubSVG from "./githubsvg";
 
 export default function Home() {
   const [
